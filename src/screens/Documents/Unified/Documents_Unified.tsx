@@ -488,30 +488,28 @@ export const Documents_Unified = () => {
         
         {/* Modal de opções de upload */}
         {screenState === ScreenState.UPLOAD_OPTIONS && (
-          <Animated.View style={[styles.modalOverlay, { opacity: modalOpacity }]}>
-            <TouchableOpacity 
-              style={styles.modalBackdrop}
-              onPress={hideUploadOptions}
-              activeOpacity={1}
-            >
-              <View style={styles.modalContent}>                
-                <TouchableOpacity 
-                  style={styles.optionButton}
-                  onPress={() => {
-                    hideUploadOptions();
-                    setTimeout(() => {
-                      uploadDocument();
-                    }, 300);
-                  }}
-                >
-                  <SvgXml xml={pencilIcon} width={16} height={16} />
-                  <Text style={styles.optionText}>Upload New File</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity style={styles.optionButton}>
-                  <SvgXml xml={folderIcon} width={16} height={16} />
-                  <Text style={styles.optionText}>Create New Folder</Text>
-                </TouchableOpacity>
+          <Animated.View style={[styles.uploadPopoverOverlay, { opacity: modalOpacity }]}>
+            <TouchableOpacity style={{flex:1}} activeOpacity={1} onPress={hideUploadOptions}>
+              <View style={styles.uploadPopoverContent} pointerEvents="box-none">
+                <View style={styles.modalContent}>                
+                  <TouchableOpacity 
+                    style={styles.optionButton}
+                    onPress={() => {
+                      hideUploadOptions();
+                      setTimeout(() => {
+                        uploadDocument();
+                      }, 300);
+                    }}
+                  >
+                    <SvgXml xml={pencilIcon} width={16} height={16} />
+                    <Text style={styles.optionText}>Upload New File</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity style={styles.optionButton}>
+                    <SvgXml xml={folderIcon} width={16} height={16} />
+                    <Text style={styles.optionText}>Create New Folder</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </TouchableOpacity>
           </Animated.View>
@@ -593,11 +591,11 @@ export const Documents_Unified = () => {
         onRequestClose={() => setShowModal(false)}
       >
         <TouchableOpacity
-          style={styles.modalOverlay}
+          style={styles.documentOptionsOverlay}
           activeOpacity={1}
           onPress={() => setShowModal(false)}
         >
-          <View style={styles.modalContent}>
+          <View style={styles.documentOptionsContent}>
             <ModalContent />
           </View>
         </TouchableOpacity>
@@ -756,19 +754,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   // Estilos do modal de opções
+  documentOptionsOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  documentOptionsContent: {
+    width: '100%',
+    maxWidth: 500,
+    backgroundColor: '#F2F4F7',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modalBackdrop: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    paddingBottom: 140,
-    paddingRight: 24,
   },
   modalContent: {
     width: '90%',
@@ -932,5 +939,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#344054',
+  },
+  // Estilos para o popover do upload (UPLOAD_OPTIONS)
+  uploadPopoverOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.01)', // quase transparente só para capturar o clique
+    zIndex: 10,
+  },
+  uploadPopoverContent: {
+    position: 'absolute',
+    right: 24,
+    bottom: 140, // um pouco acima do botão flutuante
+    minWidth: 240,
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
 }); 

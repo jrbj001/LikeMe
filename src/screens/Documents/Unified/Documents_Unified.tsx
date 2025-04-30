@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, Animated, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, Animated, Modal, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../types/navigation';
@@ -155,6 +155,7 @@ export const Documents_Unified = () => {
   const [currentDocument, setCurrentDocument] = useState<Document | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   
   // Animações
   const fadeAnim = useState(new Animated.Value(1))[0];
@@ -337,8 +338,20 @@ export const Documents_Unified = () => {
     setShowModal(false);
   };
 
-  const handleDownload = () => {
-    // Implementar download
+  const handleDownload = async () => {
+    if (!selectedDocument) return;
+    try {
+      // Caminho de destino na pasta de downloads
+      const fileName = selectedDocument.name;
+      const destPath = FileSystem.documentDirectory + fileName;
+      await FileSystem.copyAsync({
+        from: selectedDocument.uri,
+        to: destPath,
+      });
+      Alert.alert('Download', 'Arquivo copiado para a pasta interna do app.');
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível baixar o arquivo.');
+    }
     setShowModal(false);
   };
 
@@ -355,7 +368,7 @@ export const Documents_Unified = () => {
   };
 
   const handleDetails = () => {
-    // Implementar detalhes
+    setShowDetailsModal(true);
     setShowModal(false);
   };
 
@@ -428,6 +441,34 @@ export const Documents_Unified = () => {
         <SvgXml xml={menuDotsIcon} width={16} height={16} />
       </TouchableOpacity>
     </TouchableOpacity>
+  );
+  
+  // Modal de detalhes do documento
+  const DetailsModal = () => (
+    <Modal
+      visible={showDetailsModal}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => setShowDetailsModal(false)}
+    >
+      <TouchableOpacity
+        style={styles.documentOptionsOverlay}
+        activeOpacity={1}
+        onPress={() => setShowDetailsModal(false)}
+      >
+        <View style={styles.documentOptionsContent}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, marginBottom: 12}}>Detalhes do Documento</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Nome:</Text> {selectedDocument?.name}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Data:</Text> {selectedDocument?.createdAt}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Tamanho:</Text> {selectedDocument?.size}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Tipo:</Text> {selectedDocument?.type}</Text>
+          <Text numberOfLines={1} ellipsizeMode="middle"><Text style={{fontWeight: 'bold'}}>Caminho:</Text> {selectedDocument?.uri}</Text>
+          <TouchableOpacity style={{marginTop: 20, alignSelf: 'flex-end'}} onPress={() => setShowDetailsModal(false)}>
+            <Text style={{color: '#5DC090', fontWeight: 'bold'}}>Fechar</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </Modal>
   );
   
   return (
@@ -600,6 +641,8 @@ export const Documents_Unified = () => {
           </View>
         </TouchableOpacity>
       </Modal>
+      
+      <DetailsModal />
     </View>
   );
 };

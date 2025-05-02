@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "type": "open",
+    "question": "Como você descreveria sua energia hoje em uma palavra?"
+  },
+  {
+    "id": 2,
+    "type": "single",
+    "question": "Há quanto tempo sente que sua disposição física ou mental não é mais a mesma?",
+    "options": [
+      "Algumas semanas",
+      "Alguns meses",
+      "Desde a pandemia",
+      "Desde um evento específico (ex: COVID, perda, estresse)",
+      "Sempre foi assim",
+      "Sinto que estou bem"
+    ]
+  },
+  {
+    "id": 3,
+    "type": "multiple",
+    "question": "Seu corpo está te dando sinais? Quais dessas frases mais ressoam com você?",
+    "options": [
+      "Me sinto inflamado(a), como se algo estivesse fora de equilíbrio",
+      "Tenho lapsos de memória, foco ou motivação",
+      "Acordo cansado(a), mesmo dormindo",
+      "Meu intestino ou minha pele estão reagindo com frequência",
+      "Estou mais ansioso(a) ou sensível emocionalmente",
+      "Nenhuma dessas, mas sinto que algo pode ser ajustado"
+    ]
+  },
+  {
+    "id": 4,
+    "type": "open",
+    "question": "Como está sua relação com o alimento e com o seu corpo hoje?"
+  },
+  {
+    "id": 5,
+    "type": "single",
+    "question": "Você sente que vive num estado de alerta constante?",
+    "options": [
+      "Sim, como se meu sistema nervoso nunca desligasse",
+      "Às vezes, principalmente em situações específicas",
+      "Não, me sinto tranquilo(a) na maior parte do tempo"
+    ]
+  },
+  {
+    "id": 6,
+    "type": "single",
+    "question": "Como é seu sono?",
+    "options": [
+      "Durmo bem e acordo revigorado",
+      "Tenho dificuldade para dormir ou manter o sono",
+      "Acordo várias vezes ou acordo cansado",
+      "Sono leve e superficial",
+      "Tomo algo para conseguir dormir"
+    ]
+  },
+  {
+    "id": 7,
+    "type": "single",
+    "question": "Você sente que precisa de ajuda para recuperar seu eixo – físico, emocional e mental?",
+    "options": [
+      "Sim, quero muito voltar a ser quem eu era (ou melhor)",
+      "Sim, mas ainda estou buscando por onde começar",
+      "Estou começando, mas falta consistência",
+      "Quero entender se esse é o caminho certo pra mim"
+    ]
+  },
+  {
+    "id": 8,
+    "type": "single",
+    "question": "Você conhece ou já ouviu falar do Dr. Zeballos e da medicina integrativa?",
+    "options": [
+      "Sim, sou fã!",
+      "Já ouvi falar, mas não conheço bem",
+      "Não conheço, quero entender mais",
+      "Não tenho interesse nesse tipo de abordagem (redireciona)"
+    ]
+  },
+  {
+    "id": 9,
+    "type": "single",
+    "question": "Como prefere iniciar sua jornada de recuperação?",
+    "options": [
+      "Com um protocolo pronto com práticas, alimentos e suplementos",
+      "Com um mentor ao meu lado me guiando",
+      "Quero entender meu corpo primeiro",
+      "Surpreenda-me com o melhor caminho"
+    ]
+  }
+] 

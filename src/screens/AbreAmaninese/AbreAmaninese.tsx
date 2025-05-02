@@ -39,7 +39,7 @@ export const AbreAmaninese = () => {
       <Image source={require('../../assets/images/amaninese_background-image.png')} style={styles.backgroundImage} resizeMode="cover" />
 
       {/* Botão */}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Abre_documents')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Abre_amaninese_default')}>
         <Text style={styles.buttonText}>Connect gadget</Text>
       </TouchableOpacity>
 

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
 import questions from './questions.json';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -10,6 +14,7 @@ const { width } = Dimensions.get('window');
 export const Abre_amaninese_default = () => {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<any>({});
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const question = questions[current];
 
   // Handlers para respostas
@@ -33,10 +38,17 @@ export const Abre_amaninese_default = () => {
   // Navegação
   const next = () => {
     if (current < questions.length - 1) setCurrent(current + 1);
-    // Aqui pode salvar as respostas ao final
   };
   const prev = () => {
     if (current > 0) setCurrent(current - 1);
+  };
+  const finish = async () => {
+    try {
+      await AsyncStorage.setItem('@likeme_answers', JSON.stringify(answers));
+    } catch (e) {
+      // Trate o erro se necessário
+    }
+    navigation.replace('Abre_documents');
   };
 
   // Renderização dos tipos de pergunta
@@ -81,6 +93,15 @@ export const Abre_amaninese_default = () => {
         </TouchableOpacity>
       </View>
 
+      {/* Slogan */}
+      <View style={styles.sloganContainer}>
+        <Text style={styles.sloganText}>
+          <Text style={styles.sloganBold}>We want to get to know you{"\n"}</Text>
+          <Text style={styles.sloganGreenItalic}>better to suggest the best{"\n"}</Text>
+          <Text style={styles.sloganBold}>strategy for your goals.</Text>
+        </Text>
+      </View>
+
       {/* Pergunta */}
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <Text style={styles.questionText}>{question.question}</Text>
@@ -112,9 +133,15 @@ export const Abre_amaninese_default = () => {
               <Text style={styles.prevButtonText}>Anterior</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.nextButton} onPress={next}>
-            <Text style={styles.nextButtonText}>Next</Text>
-          </TouchableOpacity>
+          {current < questions.length - 1 ? (
+            <TouchableOpacity style={styles.nextButton} onPress={next}>
+              <Text style={styles.nextButtonText}>Next</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.nextButton} onPress={finish}>
+              <Text style={styles.nextButtonText}>Finalizar</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -127,11 +154,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A1D23',
     paddingTop: 40,
     paddingHorizontal: 20,
+    position: 'relative',
   },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 19,
     marginBottom: 24,
   },
   logoText: {
@@ -161,8 +190,9 @@ const styles = StyleSheet.create({
   questionText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: 'normal',
+    textAlign: 'left',
+    marginTop: 38,
     marginBottom: 24,
   },
   input: {
@@ -206,7 +236,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#B4E48E',
   },
   footer: {
-    marginTop: 16,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 76,
     alignItems: 'center',
   },
   pagination: {
@@ -251,5 +284,23 @@ const styles = StyleSheet.create({
   prevButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  sloganContainer: {
+    marginBottom: 32,
+    marginTop: 8,
+  },
+  sloganText: {
+    textAlign: 'center',
+    fontSize: 20,
+    lineHeight: 26,
+  },
+  sloganBold: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  sloganGreenItalic: {
+    color: '#B4E48E',
+    fontStyle: 'italic',
+    fontWeight: 'bold',
   },
 }); 

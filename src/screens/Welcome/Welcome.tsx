@@ -44,10 +44,11 @@ export const Welcome = () => {
               <Text style={styles.blueText}>Health</Text>
               <Text style={styles.blackText}> </Text>
               <Text style={styles.greenText}>&</Text>
-              <Text style={styles.blackText}> </Text>
+              {'\n'}
               <Text style={styles.blueItalicText}>WELLBEING</Text>
               <Text style={styles.blueText}> </Text>
               <Text style={styles.blueText}>DIFFERENTLY</Text>
+              {'\n'}
               <Text style={styles.blackText}> </Text>
               <Text style={styles.darkText}>and turn it into a Habit</Text>
             </Text>
@@ -144,11 +145,12 @@ const styles = StyleSheet.create({
     width: 184,
     height: 191,
     top: 0,
-    right: 20,
+    right: 0,
   },
   logoText: {
     position: 'absolute',
     top: 24,
+    left: 8,
     fontSize: 20,
     letterSpacing: 0,
   },

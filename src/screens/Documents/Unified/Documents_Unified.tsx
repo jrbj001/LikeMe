@@ -659,6 +659,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 24,
+    marginTop: 32,
   },
   logoText: {
     fontSize: 20,

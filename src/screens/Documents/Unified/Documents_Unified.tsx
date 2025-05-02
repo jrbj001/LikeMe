@@ -120,6 +120,27 @@ const infoIcon = `
 </svg>
 `;
 
+// SVGs personalizados para cada tipo de arquivo
+const pdfIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#E74C3C"/><text x="6" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">PDF</text></svg>`;
+const imageIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#27AE60"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">IMG</text></svg>`;
+const wordIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#2980D9"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">DOC</text></svg>`;
+const excelIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#229954"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">XLS</text></svg>`;
+const textIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#8E44AD"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">TXT</text></svg>`;
+const genericIcon = fileIcon;
+
+// Função para retornar o ícone correto conforme a extensão
+const getFileIcon = (name?: string) => {
+  if (!name) return genericIcon;
+  const ext = name.split('.').pop()?.toLowerCase();
+  if (!ext) return genericIcon;
+  if (ext === 'pdf') return pdfIcon;
+  if (["jpg","jpeg","png","gif","bmp","webp"].includes(ext)) return imageIcon;
+  if (["doc","docx"].includes(ext)) return wordIcon;
+  if (["xls","xlsx"].includes(ext)) return excelIcon;
+  if (["txt","rtf","csv"].includes(ext)) return textIcon;
+  return genericIcon;
+};
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // Chave para armazenamento de documentos
@@ -145,6 +166,17 @@ enum ScreenState {
   UPLOADING = 'uploading',    // Progresso de upload
   UPLOAD_COMPLETE = 'uploadComplete', // Upload concluído
 }
+
+// Função utilitária para extrair a extensão do arquivo
+const getFileExtension = (name?: string, type?: string) => {
+  if (name && name.includes('.')) {
+    return name.split('.').pop()?.toUpperCase();
+  }
+  if (type && type.includes('/')) {
+    return type.split('/').pop()?.toUpperCase();
+  }
+  return '';
+};
 
 export const Documents_Unified = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -243,7 +275,7 @@ export const Documents_Unified = () => {
   const uploadDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+        type: '*/*',
         copyToCacheDirectory: true
       });
       
@@ -376,7 +408,7 @@ export const Documents_Unified = () => {
     <View style={styles.modalContainer}>
       <View style={styles.modalHeader}>
         <View style={styles.modalHeaderContent}>
-          <SvgXml xml={fileIcon} width={24} height={24} />
+          <SvgXml xml={getFileIcon(selectedDocument?.name)} width={24} height={24} />
           <View style={styles.modalHeaderText}>
             <Text style={styles.modalTitle}>{selectedDocument?.name}</Text>
             <View style={styles.modalSubtitle}>
@@ -423,14 +455,14 @@ export const Documents_Unified = () => {
       style={styles.documentItem}
       onPress={() => handleMenuPress(item)}
     >
-      <SvgXml xml={fileIcon} width={24} height={24} />
+      <SvgXml xml={getFileIcon(item.name)} width={24} height={24} />
       
       <View style={styles.documentInfo}>
         <Text style={styles.documentName}>{item.name}</Text>
         <View style={styles.documentMeta}>
           <Text style={styles.documentDate}>{item.createdAt}</Text>
           <Text style={styles.documentDot}>•</Text>
-          <Text style={styles.documentSize}>{item.size}</Text>
+          <Text style={styles.documentSize}>{item.size} {getFileExtension(item.name, item.type)}</Text>
         </View>
       </View>
       
@@ -563,8 +595,8 @@ export const Documents_Unified = () => {
               <Text style={styles.uploadingTitle}>Uploading File</Text>
               
               <View style={styles.fileItemContainer}>
-                <Text style={styles.fileName}>{currentDocument?.name || 'Document.pdf'}</Text>
-                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {currentDocument?.type.split('/')[1]?.toUpperCase() || 'PDF'}</Text>
+                <Text style={styles.fileName}>{currentDocument?.name || ''}</Text>
+                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {getFileExtension(currentDocument?.name, currentDocument?.type)}</Text>
                 
                 <View style={styles.progressBarContainer}>
                   <View style={[styles.progressBar, { width: `${uploadProgress}%` }]} />
@@ -597,8 +629,8 @@ export const Documents_Unified = () => {
               <Text style={styles.uploadingTitle}>Uploading File</Text>
               
               <View style={styles.fileItemContainer}>
-                <Text style={styles.fileName}>{currentDocument?.name || 'Document.pdf'}</Text>
-                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {currentDocument?.type.split('/')[1]?.toUpperCase() || 'PDF'}</Text>
+                <Text style={styles.fileName}>{currentDocument?.name || ''}</Text>
+                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {getFileExtension(currentDocument?.name, currentDocument?.type)}</Text>
                 
                 <View style={styles.checkContainer}>
                   <View style={styles.checkCircle}>

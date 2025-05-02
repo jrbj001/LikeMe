@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
 const { width, height } = Dimensions.get('window');
 
 export const Welcome = () => {
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('AbreAmaninese');
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
-    <TouchableOpacity 
-      style={styles.container} 
-      activeOpacity={1}
-      onPress={() => navigation.navigate('Abre_documents')}
-    >
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
         <Image
@@ -25,7 +25,6 @@ export const Welcome = () => {
           style={styles.mainImage}
           resizeMode="cover"
         />
-        
         <View style={styles.overlayContainer}>
           <Image
             source={require('../../../assets/welcome/overlay-image.png')}
@@ -37,7 +36,6 @@ export const Welcome = () => {
             style={styles.swipeIcon}
           />
         </View>
-
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>
@@ -53,13 +51,11 @@ export const Welcome = () => {
               <Text style={styles.darkText}>and turn it into a Habit</Text>
             </Text>
           </View>
-
           <Image
             source={require('../../../assets/welcome/background-image.png')}
             style={styles.backgroundImage}
             resizeMode="cover"
           />
-
           <Text style={styles.logoText}>
             <Text style={styles.darkText}>like</Text>
             <Text style={styles.boldBlueText}>me</Text>
@@ -67,7 +63,6 @@ export const Welcome = () => {
         </View>
       </View>
     </SafeAreaView>
-    </TouchableOpacity>
   );
 };
 

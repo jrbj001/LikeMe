@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,17 +9,24 @@ const { width, height } = Dimensions.get('window');
 
 export const Welcome = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('AbreAmaninese');
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }).start(() => {
+        navigation.replace('AbreAmaninese');
+      });
     }, 4000);
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, [navigation, fadeAnim]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mainContainer}>
+      <Animated.View style={[styles.mainContainer, { opacity: fadeAnim }]}>
         <Image
           source={require('../../../assets/welcome/main-image.png')}
           style={styles.mainImage}
@@ -61,7 +68,7 @@ export const Welcome = () => {
             <Text style={styles.boldBlueText}>me</Text>
           </Text>
         </View>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 };

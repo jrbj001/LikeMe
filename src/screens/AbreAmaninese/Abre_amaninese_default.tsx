@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native';
-import questions from './questions.json';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import questions from './questions.json';
 
 const { width } = Dimensions.get('window');
 
-// Tipos de perguntas
-// type: open | single | multiple
+// Tipos
+type QuestionType = 'open' | 'single' | 'multiple';
+
+interface Question {
+  id: number;
+  type: QuestionType;
+  question: string;
+  options?: string[];
+}
+
+interface Answers {
+  [key: number]: string | string[];
+}
 
 export const Abre_amaninese_default = () => {
   const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<any>({});
+  const [answers, setAnswers] = useState<Answers>({});
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const question = questions[current];
 
@@ -27,7 +38,7 @@ export const Abre_amaninese_default = () => {
   };
 
   const handleMultipleChange = (option: string) => {
-    const prev = answers[question.id] || [];
+    const prev = (answers[question.id] as string[]) || [];
     if (prev.includes(option)) {
       setAnswers({ ...answers, [question.id]: prev.filter((o: string) => o !== option) });
     } else {
@@ -46,15 +57,15 @@ export const Abre_amaninese_default = () => {
     try {
       await AsyncStorage.setItem('@likeme_answers', JSON.stringify(answers));
     } catch (e) {
-      // Trate o erro se necessário
+      console.error('Erro ao salvar respostas:', e);
     }
     navigation.replace('Abre_documents');
   };
 
   // Renderização dos tipos de pergunta
   const renderOptions = () => {
-    if (question.type === 'single') {
-      return question.options?.map((opt: string, idx: number) => (
+    if (question.type === 'single' && question.options) {
+      return question.options.map((opt: string, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={styles.optionRow}
@@ -65,14 +76,14 @@ export const Abre_amaninese_default = () => {
         </TouchableOpacity>
       ));
     }
-    if (question.type === 'multiple') {
-      return question.options?.map((opt: string, idx: number) => (
+    if (question.type === 'multiple' && question.options) {
+      return question.options.map((opt: string, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={styles.optionRow}
           onPress={() => handleMultipleChange(opt)}
         >
-          <View style={[styles.checkbox, answers[question.id]?.includes(opt) && styles.checkboxSelected]} />
+          <View style={[styles.checkbox, (answers[question.id] as string[])?.includes(opt) && styles.checkboxSelected]} />
           <Text style={styles.optionText}>{opt}</Text>
         </TouchableOpacity>
       ));
@@ -110,7 +121,7 @@ export const Abre_amaninese_default = () => {
             style={styles.input}
             placeholder="Digite sua resposta..."
             placeholderTextColor="#AAA"
-            value={answers[question.id] || ''}
+            value={answers[question.id] as string || ''}
             onChangeText={handleOpenChange}
           />
         )}
@@ -120,7 +131,7 @@ export const Abre_amaninese_default = () => {
       {/* Paginação e botões */}
       <View style={styles.footer}>
         <View style={styles.pagination}>
-          {questions.map((_, idx) => (
+          {questions.map((_: Question, idx: number) => (
             <View
               key={idx}
               style={[styles.dot, idx === current && styles.dotActive]}

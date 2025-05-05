@@ -13,7 +13,7 @@ export const Welcome = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('AbreAmaninese');
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, [navigation]);
 

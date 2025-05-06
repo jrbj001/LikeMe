@@ -18,7 +18,7 @@ export const Welcome = () => {
         duration: 800,
         useNativeDriver: true,
       }).start(() => {
-        navigation.replace('AbreAmaninese');
+        navigation.replace('TermosDeUso');
       });
     }, 4000);
     return () => clearTimeout(timer);

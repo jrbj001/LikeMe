@@ -5,4 +5,5 @@ export type RootStackParamList = {
   Abre_amaninese_default: undefined;
   Abre_documents: undefined;
   Documents_Unified: undefined;
+  TermosDeUso: undefined;
 }; 

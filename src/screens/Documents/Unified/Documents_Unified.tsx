@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, Animated, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, Animated, Modal, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../types/navigation';
@@ -66,11 +66,80 @@ const fileIcon = `
 </svg>
 `;
 
-const arrowRightIcon = `
+const trashIcon = `
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z" fill="#FFF7E9"/>
+  <path d="M2 4H3.33333H14" stroke="#FFF7E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.33333 4V2.66667C5.33333 2.31305 5.47381 1.97391 5.72386 1.72386C5.97391 1.47381 6.31305 1.33333 6.66667 1.33333H9.33333C9.68695 1.33333 10.0261 1.47381 10.2761 1.72386C10.5262 1.97391 10.6667 2.31305 10.6667 2.66667V4M12.6667 4V13.3333C12.6667 13.687 12.5262 14.0261 12.2761 14.2761C12.0261 14.5262 11.687 14.6667 11.3333 14.6667H4.66667C4.31305 14.6667 3.97391 14.5262 3.72386 14.2761C3.47381 14.0261 3.33333 13.687 3.33333 13.3333V4H12.6667Z" stroke="#FFF7E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
+
+const menuDotsIcon = `
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="3" r="1.5" fill="#FFFFFF"/>
+  <circle cx="8" cy="8" r="1.5" fill="#FFFFFF"/>
+  <circle cx="8" cy="13" r="1.5" fill="#FFFFFF"/>
+</svg>
+`;
+
+const shareIcon = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M15 6.66667C16.3807 6.66667 17.5 5.54738 17.5 4.16667C17.5 2.78595 16.3807 1.66667 15 1.66667C13.6193 1.66667 12.5 2.78595 12.5 4.16667C12.5 5.54738 13.6193 6.66667 15 6.66667Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5 12.5C6.38071 12.5 7.5 11.3807 7.5 10C7.5 8.61929 6.38071 7.5 5 7.5C3.61929 7.5 2.5 8.61929 2.5 10C2.5 11.3807 3.61929 12.5 5 12.5Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M15 18.3333C16.3807 18.3333 17.5 17.214 17.5 15.8333C17.5 14.4526 16.3807 13.3333 15 13.3333C13.6193 13.3333 12.5 14.4526 12.5 15.8333C12.5 17.214 13.6193 18.3333 15 18.3333Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M7.15833 11.2583L12.85 14.575" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.8417 5.425L7.15833 8.74167" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const downloadIcon = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 12.5V2.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const editIcon = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.1667 2.5C14.3855 2.28113 14.6454 2.10751 14.9313 1.98906C15.2173 1.87061 15.5238 1.80957 15.8333 1.80957C16.1429 1.80957 16.4494 1.87061 16.7353 1.98906C17.0213 2.10751 17.2812 2.28113 17.5 2.5C17.7189 2.71875 17.8925 2.97865 18.0109 3.2646C18.1294 3.55054 18.1904 3.85702 18.1904 4.16667C18.1904 4.47631 18.1294 4.78279 18.0109 5.06874C17.8925 5.35468 17.7189 5.61458 17.5 5.83333L6.25 17.0833L2.5 18.3333L3.75 14.5833L14.1667 2.5Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const deleteIcon = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.5 5H4.16667H17.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.66667 5V3.33333C6.66667 2.89131 6.84226 2.46738 7.15482 2.15482C7.46738 1.84226 7.89131 1.66667 8.33333 1.66667H11.6667C12.1087 1.66667 12.5326 1.84226 12.8452 2.15482C13.1577 2.46738 13.3333 2.89131 13.3333 3.33333V5M15.8333 5V16.6667C15.8333 17.1087 15.6577 17.5326 15.3452 17.8452C15.0326 18.1577 14.6087 18.3333 14.1667 18.3333H5.83333C5.39131 18.3333 4.96738 18.1577 4.65482 17.8452C4.34226 17.5326 4.16667 17.1087 4.16667 16.6667V5H15.8333Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+const infoIcon = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 13.3333V10" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 6.66667H10.0083" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
+
+// SVGs personalizados para cada tipo de arquivo
+const pdfIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#E74C3C"/><text x="6" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">PDF</text></svg>`;
+const imageIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#27AE60"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">IMG</text></svg>`;
+const wordIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#2980D9"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">DOC</text></svg>`;
+const excelIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#229954"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">XLS</text></svg>`;
+const textIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#8E44AD"/><text x="4" y="17" fill="white" font-size="10" font-family="Arial" font-weight="bold">TXT</text></svg>`;
+const genericIcon = fileIcon;
+
+// Função para retornar o ícone correto conforme a extensão
+const getFileIcon = (name?: string) => {
+  if (!name) return genericIcon;
+  const ext = name.split('.').pop()?.toLowerCase();
+  if (!ext) return genericIcon;
+  if (ext === 'pdf') return pdfIcon;
+  if (["jpg","jpeg","png","gif","bmp","webp"].includes(ext)) return imageIcon;
+  if (["doc","docx"].includes(ext)) return wordIcon;
+  if (["xls","xlsx"].includes(ext)) return excelIcon;
+  if (["txt","rtf","csv"].includes(ext)) return textIcon;
+  return genericIcon;
+};
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -98,6 +167,17 @@ enum ScreenState {
   UPLOAD_COMPLETE = 'uploadComplete', // Upload concluído
 }
 
+// Função utilitária para extrair a extensão do arquivo
+const getFileExtension = (name?: string, type?: string) => {
+  if (name && name.includes('.')) {
+    return name.split('.').pop()?.toUpperCase();
+  }
+  if (type && type.includes('/')) {
+    return type.split('/').pop()?.toUpperCase();
+  }
+  return '';
+};
+
 export const Documents_Unified = () => {
   const navigation = useNavigation<NavigationProp>();
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -105,6 +185,9 @@ export const Documents_Unified = () => {
   const [screenState, setScreenState] = useState<ScreenState>(ScreenState.LIST);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [currentDocument, setCurrentDocument] = useState<Document | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   
   // Animações
   const fadeAnim = useState(new Animated.Value(1))[0];
@@ -192,7 +275,7 @@ export const Documents_Unified = () => {
   const uploadDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+        type: '*/*',
         copyToCacheDirectory: true
       });
       
@@ -277,30 +360,147 @@ export const Documents_Unified = () => {
     });
   };
   
+  const handleMenuPress = (document: Document) => {
+    setSelectedDocument(document);
+    setShowModal(true);
+  };
+
+  const handleShare = () => {
+    // Implementar compartilhamento
+    setShowModal(false);
+  };
+
+  const handleDownload = async () => {
+    if (!selectedDocument) return;
+    try {
+      // Caminho de destino na pasta de downloads
+      const fileName = selectedDocument.name;
+      const destPath = FileSystem.documentDirectory + fileName;
+      await FileSystem.copyAsync({
+        from: selectedDocument.uri,
+        to: destPath,
+      });
+      Alert.alert('Download', 'Arquivo copiado para a pasta interna do app.');
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível baixar o arquivo.');
+    }
+    setShowModal(false);
+  };
+
+  const handleRename = () => {
+    // Implementar renomeação
+    setShowModal(false);
+  };
+
+  const handleDelete = () => {
+    if (selectedDocument) {
+      deleteDocument(selectedDocument.id);
+    }
+    setShowModal(false);
+  };
+
+  const handleDetails = () => {
+    setShowDetailsModal(true);
+    setShowModal(false);
+  };
+
+  const ModalContent = () => (
+    <View style={styles.modalContainer}>
+      <View style={styles.modalHeader}>
+        <View style={styles.modalHeaderContent}>
+          <SvgXml xml={getFileIcon(selectedDocument?.name)} width={24} height={24} />
+          <View style={styles.modalHeaderText}>
+            <Text style={styles.modalTitle}>{selectedDocument?.name}</Text>
+            <View style={styles.modalSubtitle}>
+              <Text style={styles.modalSubtitleText}>{selectedDocument?.createdAt}</Text>
+              <Text style={styles.modalSubtitleText}>•</Text>
+              <Text style={styles.modalSubtitleText}>{selectedDocument?.size}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.modalOptions}>
+        <TouchableOpacity style={styles.modalOption} onPress={handleShare}>
+          <SvgXml xml={shareIcon} width={20} height={20} />
+          <Text style={styles.modalOptionText}>Compartilhar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modalOption} onPress={handleDownload}>
+          <SvgXml xml={downloadIcon} width={20} height={20} />
+          <Text style={styles.modalOptionText}>Download</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modalOption} onPress={handleRename}>
+          <SvgXml xml={editIcon} width={20} height={20} />
+          <Text style={styles.modalOptionText}>Renomear</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modalOption} onPress={handleDelete}>
+          <SvgXml xml={deleteIcon} width={20} height={20} />
+          <Text style={styles.modalOptionText}>Excluir</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.modalOption} onPress={handleDetails}>
+          <SvgXml xml={infoIcon} width={20} height={20} />
+          <Text style={styles.modalOptionText}>Detalhes</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+  
   // Renderizar um item da lista
   const renderItem = ({ item }: { item: Document }) => (
     <TouchableOpacity 
       style={styles.documentItem}
-      onPress={() => console.log('Documento selecionado:', item.name)}
+      onPress={() => handleMenuPress(item)}
     >
-      <SvgXml xml={fileIcon} width={24} height={24} />
+      <SvgXml xml={getFileIcon(item.name)} width={24} height={24} />
       
       <View style={styles.documentInfo}>
         <Text style={styles.documentName}>{item.name}</Text>
         <View style={styles.documentMeta}>
           <Text style={styles.documentDate}>{item.createdAt}</Text>
           <Text style={styles.documentDot}>•</Text>
-          <Text style={styles.documentSize}>{item.size}</Text>
+          <Text style={styles.documentSize}>{item.size} {getFileExtension(item.name, item.type)}</Text>
         </View>
       </View>
       
       <TouchableOpacity
-        onPress={() => deleteDocument(item.id)}
+        onPress={() => handleMenuPress(item)}
         style={styles.deleteButton}
       >
-        <SvgXml xml={arrowRightIcon} width={16} height={16} />
+        <SvgXml xml={menuDotsIcon} width={16} height={16} />
       </TouchableOpacity>
     </TouchableOpacity>
+  );
+  
+  // Modal de detalhes do documento
+  const DetailsModal = () => (
+    <Modal
+      visible={showDetailsModal}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => setShowDetailsModal(false)}
+    >
+      <TouchableOpacity
+        style={styles.documentOptionsOverlay}
+        activeOpacity={1}
+        onPress={() => setShowDetailsModal(false)}
+      >
+        <View style={styles.documentOptionsContent}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, marginBottom: 12}}>Detalhes do Documento</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Nome:</Text> {selectedDocument?.name}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Data:</Text> {selectedDocument?.createdAt}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Tamanho:</Text> {selectedDocument?.size}</Text>
+          <Text><Text style={{fontWeight: 'bold'}}>Tipo:</Text> {selectedDocument?.type}</Text>
+          <Text numberOfLines={1} ellipsizeMode="middle"><Text style={{fontWeight: 'bold'}}>Caminho:</Text> {selectedDocument?.uri}</Text>
+          <TouchableOpacity style={{marginTop: 20, alignSelf: 'flex-end'}} onPress={() => setShowDetailsModal(false)}>
+            <Text style={{color: '#5DC090', fontWeight: 'bold'}}>Fechar</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </Modal>
   );
   
   return (
@@ -361,32 +561,28 @@ export const Documents_Unified = () => {
         
         {/* Modal de opções de upload */}
         {screenState === ScreenState.UPLOAD_OPTIONS && (
-          <Animated.View style={[styles.modalOverlay, { opacity: modalOpacity }]}>
-            <TouchableOpacity 
-              style={styles.modalBackdrop}
-              onPress={hideUploadOptions}
-              activeOpacity={1}
-            >
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Add New File</Text>
-                
-                <TouchableOpacity 
-                  style={styles.optionButton}
-                  onPress={() => {
-                    hideUploadOptions();
-                    setTimeout(() => {
-                      uploadDocument();
-                    }, 300);
-                  }}
-                >
-                  <SvgXml xml={pencilIcon} width={16} height={16} />
-                  <Text style={styles.optionText}>Upload New File</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity style={styles.optionButton}>
-                  <SvgXml xml={folderIcon} width={16} height={16} />
-                  <Text style={styles.optionText}>Create New Folder</Text>
-                </TouchableOpacity>
+          <Animated.View style={[styles.uploadPopoverOverlay, { opacity: modalOpacity }]}>
+            <TouchableOpacity style={{flex:1}} activeOpacity={1} onPress={hideUploadOptions}>
+              <View style={styles.uploadPopoverContent} pointerEvents="box-none">
+                <View style={styles.modalContent}>                
+                  <TouchableOpacity 
+                    style={styles.optionButton}
+                    onPress={() => {
+                      hideUploadOptions();
+                      setTimeout(() => {
+                        uploadDocument();
+                      }, 300);
+                    }}
+                  >
+                    <SvgXml xml={pencilIcon} width={16} height={16} />
+                    <Text style={styles.optionText}>Upload New File</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity style={styles.optionButton}>
+                    <SvgXml xml={folderIcon} width={16} height={16} />
+                    <Text style={styles.optionText}>Create New Folder</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </TouchableOpacity>
           </Animated.View>
@@ -399,8 +595,8 @@ export const Documents_Unified = () => {
               <Text style={styles.uploadingTitle}>Uploading File</Text>
               
               <View style={styles.fileItemContainer}>
-                <Text style={styles.fileName}>{currentDocument?.name || 'Document.pdf'}</Text>
-                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {currentDocument?.type.split('/')[1]?.toUpperCase() || 'PDF'}</Text>
+                <Text style={styles.fileName}>{currentDocument?.name || ''}</Text>
+                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {getFileExtension(currentDocument?.name, currentDocument?.type)}</Text>
                 
                 <View style={styles.progressBarContainer}>
                   <View style={[styles.progressBar, { width: `${uploadProgress}%` }]} />
@@ -433,8 +629,8 @@ export const Documents_Unified = () => {
               <Text style={styles.uploadingTitle}>Uploading File</Text>
               
               <View style={styles.fileItemContainer}>
-                <Text style={styles.fileName}>{currentDocument?.name || 'Document.pdf'}</Text>
-                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {currentDocument?.type.split('/')[1]?.toUpperCase() || 'PDF'}</Text>
+                <Text style={styles.fileName}>{currentDocument?.name || ''}</Text>
+                <Text style={styles.fileSize}>{currentDocument?.size || '0 KB'} {getFileExtension(currentDocument?.name, currentDocument?.type)}</Text>
                 
                 <View style={styles.checkContainer}>
                   <View style={styles.checkCircle}>
@@ -460,6 +656,25 @@ export const Documents_Unified = () => {
       <View style={styles.swipeContainer}>
         <SvgXml xml={swipeIcon} width={123} height={3} />
       </View>
+      
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowModal(false)}
+      >
+        <TouchableOpacity
+          style={styles.documentOptionsOverlay}
+          activeOpacity={1}
+          onPress={() => setShowModal(false)}
+        >
+          <View style={styles.documentOptionsContent}>
+            <ModalContent />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      
+      <DetailsModal />
     </View>
   );
 };
@@ -476,6 +691,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 24,
+    marginTop: 32,
   },
   logoText: {
     fontSize: 20,
@@ -614,48 +830,66 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   // Estilos do modal de opções
+  documentOptionsOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  documentOptionsContent: {
+    width: '100%',
+    maxWidth: 500,
+    backgroundColor: '#F2F4F7',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
   modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalBackdrop: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    paddingBottom: 140,
-    paddingRight: 24,
-  },
   modalContent: {
-    width: 330,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 16,
+    width: '90%',
+    maxWidth: 375,
+    backgroundColor: '#F2F4F7',
+    borderRadius: 16,
+    overflow: 'hidden',
   },
   modalTitle: {
-    fontSize: 16,
-    color: '#071E22',
-    fontWeight: '500',
-    marginBottom: 12,
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1D2939',
+    marginBottom: 4,
   },
-  optionButton: {
+  modalSubtitle: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 4,
-    marginBottom: 8,
+    gap: 4,
   },
-  optionText: {
+  modalSubtitleText: {
+    fontSize: 12,
+    color: '#1D2939',
+  },
+  modalOptions: {
+    gap: 12,
+  },
+  modalOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: 12,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+  },
+  modalOptionText: {
     fontSize: 14,
-    color: '#071E22',
-    marginLeft: 12,
+    fontWeight: '600',
+    color: '#344054',
   },
   // Estilos para a tela de upload
   uploadingContainer: {
@@ -750,5 +984,64 @@ const styles = StyleSheet.create({
     bottom: 9,
     left: 126,
     height: 3,
+  },
+  modalContainer: {
+    padding: 16,
+  },
+  modalHeader: {
+    marginBottom: 16,
+  },
+  modalHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  modalHeaderText: {
+    flex: 1,
+  },
+  documentMenu: {
+    padding: 8,
+  },
+  optionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: 12,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  optionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#344054',
+  },
+  // Estilos para o popover do upload (UPLOAD_OPTIONS)
+  uploadPopoverOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.01)', // quase transparente só para capturar o clique
+    zIndex: 10,
+  },
+  uploadPopoverContent: {
+    position: 'absolute',
+    right: 24,
+    bottom: 140, // um pouco acima do botão flutuante
+    minWidth: 240,
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
 }); 

@@ -76,7 +76,7 @@ export const Abre_documents = () => {
           </View>
 
           <Text style={styles.mainText}>
-            <Text style={styles.greenText}>Everything </Text>
+            <Text style={styles.greenLightText}>Everything </Text>
             <Text style={styles.whiteText}>about </Text>
             <Text style={[styles.whiteText, styles.italicText]}>your health </Text>
             <Text style={styles.whiteText}>and GOALS </Text>
@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginTop: 32,
   },
   logoContainer: {
     marginTop: 0,
@@ -147,6 +148,11 @@ const styles = StyleSheet.create({
     color: '#B4E48E',
     fontFamily: 'Replica-Bold',
     fontWeight: 'bold',
+  },
+  greenLightText: {
+    color: '#B4E48E',
+    fontFamily: 'Replica-Regular',
+    fontWeight: 'normal',
   },
   skipText: {
     fontFamily: 'Roboto',
@@ -175,15 +181,15 @@ const styles = StyleSheet.create({
   button: {
     width: 280,
     height: 48,
-    backgroundColor: '#128AAC',
+    backgroundColor: '#000000',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 27,
+    bottom: 70,
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: '#128AAC',
+    borderColor: '#000000',
   },
   buttonText: {
     color: '#FFFFFF',

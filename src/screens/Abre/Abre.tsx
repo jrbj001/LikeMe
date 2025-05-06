@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { View, Text, ImageBackground, TouchableOpacity, Animated } from "react-native";
 import { Svg, Line } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,6 +9,20 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const Abre = () => {
   const navigation = useNavigation<NavigationProp>();
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }).start(() => {
+        navigation.replace('Welcome');
+      });
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [navigation, fadeAnim]);
 
   return (
     <TouchableOpacity 
@@ -16,7 +30,7 @@ export const Abre = () => {
       activeOpacity={1}
       onPress={() => navigation.navigate('Welcome')}
     >
-      <View style={{ flex: 1, backgroundColor: '#0A1D23' }}>
+      <Animated.View style={{ flex: 1, backgroundColor: '#0A1D23', opacity: fadeAnim }}>
         <View style={{ width: '100%', height: '100%' }}>
           <ImageBackground
             source={require("../../assets/images/background-image.png")}
@@ -44,7 +58,7 @@ export const Abre = () => {
             </View>
           </ImageBackground>
         </View>
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 }; 

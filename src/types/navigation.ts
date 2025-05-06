@@ -6,4 +6,5 @@ export type RootStackParamList = {
   Abre_documents: undefined;
   Documents_Unified: undefined;
   TermosDeUso: undefined;
+  MarketplaceScreen: undefined;
 }; 

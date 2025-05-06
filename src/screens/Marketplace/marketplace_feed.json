@@ -1,0 +1,85 @@
+{
+  "tags": [
+    { "name": "Sleep", "color": "#5EDFFF" },
+    { "name": "Nutrition", "color": "#E6E96A" },
+    { "name": "Environment", "color": "#A3E635" },
+    { "name": "Purpose & Vision", "color": "#3B82F6" },
+    { "name": "Spirituality", "color": "#A78BFA" },
+    { "name": "Connection", "color": "#F472B6" },
+    { "name": "Movement", "color": "#F87171" },
+    { "name": "Self-Esteem", "color": "#34D399" },
+    { "name": "Stress", "color": "#FBBF24" },
+    { "name": "Oral Care", "color": "#60A5FA" },
+    { "name": "Mindfulness", "color": "#818CF8" }
+  ],
+  "sections": {
+    "protocols": { "title": "Protocols", "seeAll": "See all" },
+    "products": { "title": "Products", "seeAll": "See all" },
+    "services": { "title": "Services" }
+  },
+  "protocols": [
+    {
+      "id": 1,
+      "title": "Performance Huberman",
+      "author": "Huberman",
+      "image": "protocol-image.png",
+      "description": "Protocolo para performance física e mental.",
+      "tags": ["Sleep", "Nutrition"]
+    },
+    {
+      "id": 2,
+      "title": "Mental Balance",
+      "author": "Joe Dispenza",
+      "image": "protocol-image-1.png",
+      "description": "Protocolo para equilíbrio mental.",
+      "tags": ["Self-Esteem", "Mindfulness"]
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Creatina",
+      "brand": "Nutrify",
+      "price": 142.12,
+      "image": "health-food.png",
+      "rating": 4.9,
+      "category": "Nutrition"
+    },
+    {
+      "id": 2,
+      "name": "Blue Calm",
+      "brand": "Pura Vida",
+      "price": 210.87,
+      "image": "health-food-1.png",
+      "rating": 4.1,
+      "category": "Sleep"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Gym",
+      "category": "Fitness"
+    },
+    {
+      "id": 2,
+      "name": "Yoga room",
+      "category": "Wellness"
+    },
+    {
+      "id": 3,
+      "name": "Ceramics",
+      "category": "Art"
+    },
+    {
+      "id": 4,
+      "name": "Dance",
+      "category": "Movement"
+    },
+    {
+      "id": 5,
+      "name": "Finance",
+      "category": "Education"
+    }
+  ]
+} 

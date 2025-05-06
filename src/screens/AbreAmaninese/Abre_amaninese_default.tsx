@@ -131,7 +131,7 @@ export const Abre_amaninese_default = () => {
       {/* Paginação e botões */}
       <View style={styles.footer}>
         <View style={styles.pagination}>
-          {questions.map((_: Question, idx: number) => (
+          {questions.map((_, idx) => (
             <View
               key={idx}
               style={[styles.dot, idx === current && styles.dotActive]}

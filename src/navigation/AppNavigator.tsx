@@ -8,6 +8,7 @@ import { Abre_documents } from '../screens/Abre_documents';
 import { Documents_Unified } from '../screens/Documents/Unified/Documents_Unified';
 import { AbreAmaninese } from '../screens/AbreAmaninese';
 import { Abre_amaninese_default } from '../screens/AbreAmaninese/Abre_amaninese_default';
+import TermosDeUso from '../screens/TermosDeUso/TermosDeUso';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -26,6 +27,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="Abre_amaninese_default" component={Abre_amaninese_default} />
         <Stack.Screen name="Abre_documents" component={Abre_documents} />
         <Stack.Screen name="Documents_Unified" component={Documents_Unified} />
+        <Stack.Screen name="TermosDeUso" component={TermosDeUso} />
       </Stack.Navigator>
     </NavigationContainer>
   );

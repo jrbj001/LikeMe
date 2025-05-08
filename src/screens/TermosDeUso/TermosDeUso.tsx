@@ -11,7 +11,7 @@ export default function TermosDeUso() {
 
   const handleSubmit = () => {
     if (aceito) {
-      navigation.replace('Abre_documents');
+      navigation.replace('AbreAmaninese');
     }
   };
 

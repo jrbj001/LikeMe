@@ -19,7 +19,7 @@ export const AbreAmaninese = () => {
           <Text style={styles.whiteText}>like</Text>
           <Text style={styles.greenText}>me</Text>
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('MarketplaceScreen')}>
           <Text style={styles.skipText}>Skip step</Text>
         </TouchableOpacity>
       </View>

@@ -512,7 +512,7 @@ export const Documents_Unified = () => {
           <Text style={styles.greenText}>me</Text>
         </Text>
         
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('MarketplaceScreen')}>
           <Text style={styles.skipText}>Skip step</Text>
         </TouchableOpacity>
       </View>

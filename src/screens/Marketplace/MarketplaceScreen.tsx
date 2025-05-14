@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import BottomMenu from './BottomMenu';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
 
 // Definições de tipos para os dados do feed
 interface Tag {
@@ -63,6 +66,7 @@ const imageMap: { [key: string]: any } = {
 
 const MarketplaceScreen = () => {
   const [data, setData] = useState<MarketplaceFeed | null>(null);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     setData(feed);
@@ -103,7 +107,9 @@ const MarketplaceScreen = () => {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{data.sections.protocols.title}</Text>
           {data.sections.protocols.seeAll && (
-            <TouchableOpacity><Text style={styles.seeAll}>{data.sections.protocols.seeAll}</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Lista_protocols')}>
+              <Text style={styles.seeAll}>{data.sections.protocols.seeAll}</Text>
+            </TouchableOpacity>
           )}
         </View>
         {/* Espaço entre header e cards de Protocols */}
@@ -113,7 +119,7 @@ const MarketplaceScreen = () => {
           keyExtractor={item => item.id.toString()}
           horizontal
           renderItem={({ item }) => (
-            <View style={styles.protocolCard}>
+            <TouchableOpacity style={styles.protocolCard} onPress={() => navigation.navigate('Item_protocolo', { id: item.id })}>
               <Image source={getImage(item.image)} style={styles.protocolImage} />
               <View style={styles.protocolInfo}>
                 <Text style={styles.protocolTitle}>{item.title}</Text>
@@ -126,7 +132,7 @@ const MarketplaceScreen = () => {
                   ))}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           showsHorizontalScrollIndicator={false}
         />

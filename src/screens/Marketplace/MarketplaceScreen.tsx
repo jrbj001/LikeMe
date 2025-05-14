@@ -119,7 +119,7 @@ const MarketplaceScreen = () => {
           keyExtractor={item => item.id.toString()}
           horizontal
           renderItem={({ item }) => (
-            <View style={styles.protocolCard}>
+            <TouchableOpacity style={styles.protocolCard} onPress={() => navigation.navigate('Item_protocolo', { id: item.id })}>
               <Image source={getImage(item.image)} style={styles.protocolImage} />
               <View style={styles.protocolInfo}>
                 <Text style={styles.protocolTitle}>{item.title}</Text>
@@ -132,7 +132,7 @@ const MarketplaceScreen = () => {
                   ))}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           showsHorizontalScrollIndicator={false}
         />

@@ -11,6 +11,7 @@ import { Abre_amaninese_default } from '../screens/AbreAmaninese/Abre_amaninese_
 import TermosDeUso from '../screens/TermosDeUso/TermosDeUso';
 import MarketplaceScreen from '../screens/Marketplace/MarketplaceScreen';
 import Lista_protocols from '../screens/Marketplace/Lista_protocols';
+import Item_protocolo from '../screens/Marketplace/Item_protocolo';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -30,9 +31,4 @@ export const AppNavigator = () => {
         <Stack.Screen name="Abre_documents" component={Abre_documents} />
         <Stack.Screen name="Documents_Unified" component={Documents_Unified} />
         <Stack.Screen name="TermosDeUso" component={TermosDeUso} />
-        <Stack.Screen name="MarketplaceScreen" component={MarketplaceScreen} />
-        <Stack.Screen name="Lista_protocols" component={Lista_protocols} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}; 
+  

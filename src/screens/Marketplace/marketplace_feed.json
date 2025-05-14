@@ -24,7 +24,8 @@
       "author": "Huberman",
       "image": "protocol-image.png",
       "description": "Protocolo para performance física e mental.",
-      "tags": ["Sleep", "Nutrition"]
+      "tags": ["Sleep", "Nutrition"],
+      "longDescription": "Este protocolo foi desenvolvido para otimizar sua performance física e mental, baseado em evidências científicas e práticas recomendadas por especialistas. Inclui rotinas de sono, alimentação e exercícios para maximizar seu potencial diariamente. Siga cada etapa para obter resultados consistentes e duradouros.\n\nAlém disso, você encontrará dicas práticas para melhorar a qualidade do sono, estratégias de gerenciamento de estresse e sugestões de suplementação que podem potencializar seus resultados. O acompanhamento diário e a disciplina são fundamentais para que você perceba mudanças reais no seu corpo e mente.\n\nLembre-se: a jornada de alta performance é construída com pequenos hábitos diários. Ao seguir este protocolo, você estará investindo em saúde, disposição e bem-estar a longo prazo. Compartilhe seus avanços com a comunidade e inspire outras pessoas a também buscarem o seu melhor."
     },
     {
       "id": 2,
@@ -32,7 +33,8 @@
       "author": "Joe Dispenza",
       "image": "protocol-image-1.png",
       "description": "Protocolo para equilíbrio mental.",
-      "tags": ["Self-Esteem", "Mindfulness"]
+      "tags": ["Self-Esteem", "Mindfulness"],
+      "longDescription": "O protocolo Mental Balance traz técnicas de meditação, respiração e autoconhecimento para promover equilíbrio emocional e clareza mental. Ideal para quem busca reduzir o estresse, aumentar a autoestima e viver com mais propósito.\n\nVocê terá acesso a exercícios guiados, reflexões diárias e práticas de mindfulness que ajudam a lidar com os desafios do dia a dia. O protocolo também incentiva a criação de um ambiente positivo e o fortalecimento de relações interpessoais saudáveis.\n\nAo adotar essas práticas, você perceberá uma melhora significativa na sua qualidade de vida, maior controle emocional e mais foco para alcançar seus objetivos. Lembre-se: o equilíbrio mental é um processo contínuo e cada passo conta para uma vida mais leve e feliz."
     }
   ],
   "products": [

@@ -3,6 +3,8 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Dimensions }
 import BottomMenu from './BottomMenu';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
 
 const { width } = Dimensions.get('window');
 
@@ -25,7 +27,7 @@ interface Protocol {
 }
 
 const Lista_protocols = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [protocols, setProtocols] = useState<Protocol[]>([]);
 
   useEffect(() => {
@@ -63,13 +65,13 @@ const Lista_protocols = () => {
         numColumns={2}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <View style={styles.protocolCard}>
+          <TouchableOpacity style={styles.protocolCard} onPress={() => navigation.navigate('Item_protocolo', { id: item.id })}>
             <Image source={getImage(item.image)} style={styles.protocolImage} />
             <View style={styles.protocolInfo}>
               <Text style={styles.protocolTitle}>{item.title}</Text>
               <Text style={styles.protocolAuthor}>{item.author}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}
       />

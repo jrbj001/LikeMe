@@ -31,4 +31,10 @@ export const AppNavigator = () => {
         <Stack.Screen name="Abre_documents" component={Abre_documents} />
         <Stack.Screen name="Documents_Unified" component={Documents_Unified} />
         <Stack.Screen name="TermosDeUso" component={TermosDeUso} />
-  
+        <Stack.Screen name="MarketplaceScreen" component={MarketplaceScreen} />
+        <Stack.Screen name="Lista_protocols" component={Lista_protocols} />
+        <Stack.Screen name="Item_protocolo" component={Item_protocolo} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}; 

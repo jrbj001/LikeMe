@@ -7,4 +7,6 @@ export type RootStackParamList = {
   Documents_Unified: undefined;
   TermosDeUso: undefined;
   MarketplaceScreen: undefined;
-  L
+  Lista_protocols: undefined;
+  Item_protocolo: { id: number };
+}; 

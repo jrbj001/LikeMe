@@ -142,7 +142,9 @@ const MarketplaceScreen = () => {
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{data.sections.products.title}</Text>
           {data.sections.products.seeAll && (
-            <TouchableOpacity><Text style={styles.seeAll}>{data.sections.products.seeAll}</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Lista_products')}>
+              <Text style={styles.seeAll}>{data.sections.products.seeAll}</Text>
+            </TouchableOpacity>
           )}
         </View>
         {/* Espaço entre header e cards de Products */}

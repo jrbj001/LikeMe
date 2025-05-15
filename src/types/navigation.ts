@@ -8,5 +8,6 @@ export type RootStackParamList = {
   TermosDeUso: undefined;
   MarketplaceScreen: undefined;
   Lista_protocols: undefined;
+  Lista_products: undefined;
   Item_protocolo: { id: number };
 }; 

@@ -12,6 +12,7 @@ import TermosDeUso from '../screens/TermosDeUso/TermosDeUso';
 import MarketplaceScreen from '../screens/Marketplace/MarketplaceScreen';
 import Lista_protocols from '../screens/Marketplace/Lista_protocols';
 import Item_protocolo from '../screens/Marketplace/Item_protocolo';
+import Lista_products from '../screens/Marketplace/Lista_products';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -33,6 +34,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="TermosDeUso" component={TermosDeUso} />
         <Stack.Screen name="MarketplaceScreen" component={MarketplaceScreen} />
         <Stack.Screen name="Lista_protocols" component={Lista_protocols} />
+        <Stack.Screen name="Lista_products" component={Lista_products} />
         <Stack.Screen name="Item_protocolo" component={Item_protocolo} />
       </Stack.Navigator>
     </NavigationContainer>
